@@ -2,21 +2,25 @@
 { # Bypass Bash autoreload.
 set -euo pipefail
 
-function topdf(){
+function podoc() {
+    podman run --rm \
+           --volume "$(pwd):/data" \
+           --user $(id -u):$(id -g) \
+           docker.io/pandoc/extra "$@"
+}
+
+function topdf() {
     local -r destination="$1"
-    pandoc --standalone\
-           --from markdown\
-           --to latex\
-           --output "$destination"\
-           --highlight-style tango\
-           --variable documentclass:report\
-           --variable geometry:margin=2.5cm\
-           --variable papersize:a4\
-           --table-of-content\
-           --toc-depth 5\
-           --citeproc\
-           --variable lang:en\
-           --pdf-engine=xelatex
+    podoc --standalone \
+          --from markdown \
+          --to latex \
+          --output "$destination" \
+          --template eisvogel \
+          --syntax-highlighting idiomatic \
+          --table-of-content \
+          --toc-depth 3 \
+          --variable lang:en \
+          --pdf-engine=xelatex
 }
 
 ######################
@@ -47,7 +51,7 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
         continue
     fi
 
-    # Remove the leading base path (and any leading ./) from the filename to get a clean relative path
+    # Compute a clean relative path (remove leading base path or "./").
     if [[ "$md_file" == "$BASE_PATH"* ]]; then
         clean_path="${md_file#$BASE_PATH/}"
     else
