@@ -55,7 +55,6 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
     pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
     pdf_name="${pdf_name%.md}.pdf"
     [[ -n "$PREFIX" ]] && pdf_name="${PREFIX}${pdf_name}"
-
     pdf_output="documenter/${pdf_name}"
 
     if [[ -f "$pdf_output" && "$pdf_output" -nt "$md_file" ]]; then
@@ -64,6 +63,7 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
     fi
 
     echo "Converting: $md_file -> $pdf_output"
+    mkdir -vp "$(dirname "$pdf_output")"
     cat "$md_file" | topdf "$pdf_output"
 done
 
