@@ -8,13 +8,11 @@ function topdf(){
            --from markdown\
            --to latex\
            --output "$destination"\
-           --highlight-style tango\
-           --variable documentclass:report\
            --variable geometry:margin=2.5cm\
            --variable papersize:a4\
+           --template ./eisvogel/eisvogel.latex\
            --table-of-content\
-           --toc-depth 5\
-           --citeproc\
+           --toc-depth 3\
            --variable lang:en\
            --pdf-engine=xelatex
 }
@@ -47,7 +45,7 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
         continue
     fi
 
-    # Remove the leading base path (and any leading ./) from the filename to get a clean relative path
+    # Compute a clean relative path (remove leading base path or "./").
     if [[ "$md_file" == "$BASE_PATH"* ]]; then
         clean_path="${md_file#$BASE_PATH/}"
     else
