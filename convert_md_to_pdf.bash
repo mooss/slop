@@ -60,6 +60,11 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
 
     pdf_output="documenter/${pdf_name}"
 
+    if [[ -f "$pdf_output" && "$pdf_output" -nt "$md_file" ]]; then
+        echo "Skipping: $md_file is older than $pdf_output"
+        continue
+    fi
+
     echo "Converting: $md_file -> $pdf_output"
     cat "$md_file" | topdf "$pdf_output"
 done
