@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+{ # Bypass Bash autoreload.
 set -euo pipefail
 
 ######################
@@ -47,3 +48,5 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
 done
 
 echo "Conversion complete!"
+exit
+}
