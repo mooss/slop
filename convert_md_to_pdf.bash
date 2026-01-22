@@ -17,6 +17,30 @@ function topdf(){
            --pdf-engine=xelatex
 }
 
+function compile-markdown() {
+    local -r md_file="$1"; local clean_path
+    # Compute a clean relative path (remove leading base path or "./").
+    if [[ "$md_file" == "$BASE_PATH"* ]]; then
+        clean_path="${md_file#$BASE_PATH/}"
+    else
+        clean_path="${md_file#./}"
+    fi
+
+    local pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
+    pdf_name="${pdf_name%.md}.pdf"
+    [[ -n "$PREFIX" ]] && pdf_name="${PREFIX}${pdf_name}"
+    local -r pdf_output="documenter/${pdf_name}"
+
+    if [[ -f "$pdf_output" && "$pdf_output" -nt "$md_file" ]]; then
+        echo "Skipping: $md_file is older than $pdf_output"
+        return
+    fi
+
+    echo "Converting: $md_file -> $pdf_output"
+    mkdir -vp "$(dirname "$pdf_output")"
+    cat "$md_file" | topdf "$pdf_output"
+}
+
 ######################
 # Arguments handling #
 
@@ -41,30 +65,7 @@ mkdir -p documenter
 
 # Skipping large files because they take too long and are probably not what we want.
 find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
-    if [[ "$md_file" == *"/documenter/"* ]]; then
-        continue
-    fi
-
-    # Compute a clean relative path (remove leading base path or "./").
-    if [[ "$md_file" == "$BASE_PATH"* ]]; then
-        clean_path="${md_file#$BASE_PATH/}"
-    else
-        clean_path="${md_file#./}"
-    fi
-
-    pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
-    pdf_name="${pdf_name%.md}.pdf"
-    [[ -n "$PREFIX" ]] && pdf_name="${PREFIX}${pdf_name}"
-    pdf_output="documenter/${pdf_name}"
-
-    if [[ -f "$pdf_output" && "$pdf_output" -nt "$md_file" ]]; then
-        echo "Skipping: $md_file is older than $pdf_output"
-        continue
-    fi
-
-    echo "Converting: $md_file -> $pdf_output"
-    mkdir -vp "$(dirname "$pdf_output")"
-    cat "$md_file" | topdf "$pdf_output"
+    compile-markdown "$md_file"
 done
 
 echo "Conversion complete!"
