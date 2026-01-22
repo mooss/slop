@@ -4,13 +4,14 @@ set -euo pipefail
 ######################
 # Arguments handling #
 
-if [[ $# -ne 1 ]]; then
-    echo "Error: Missing required argument." >&2
-    echo "Usage: $0 <base_path>" >&2
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Error: Invalid number of arguments." >&2
+    echo "Usage: $0 <base_path> [prefix]" >&2
     exit 1
 fi
 
 BASE_PATH="$1"
+PREFIX="${2:-}"   # Optional prefix; empty if not supplied
 
 if [[ ! -d "$BASE_PATH" ]]; then
     echo "Error: '$BASE_PATH' is not a directory or does not exist." >&2
@@ -36,6 +37,8 @@ find "$BASE_PATH" -name "*.md" -type f | while read -r md_file; do
 
     pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
     pdf_name="${pdf_name%.md}.pdf"
+    [[ -n "$PREFIX" ]] && pdf_name="${PREFIX}${pdf_name}"
+
     pdf_output="documenter/${pdf_name}"
 
     echo "Converting: $md_file -> $pdf_output"
