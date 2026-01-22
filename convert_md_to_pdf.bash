@@ -2,6 +2,23 @@
 { # Bypass Bash autoreload.
 set -euo pipefail
 
+function topdf(){
+    local -r destination="$1"
+    pandoc --standalone\
+           --from markdown\
+           --to latex\
+           --output "$destination"\
+           --highlight-style tango\
+           --variable documentclass:report\
+           --variable geometry:margin=2.5cm\
+           --variable papersize:a4\
+           --table-of-content\
+           --toc-depth 5\
+           --citeproc\
+           --variable lang:en\
+           --pdf-engine=xelatex
+}
+
 ######################
 # Arguments handling #
 
@@ -44,7 +61,7 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
     pdf_output="documenter/${pdf_name}"
 
     echo "Converting: $md_file -> $pdf_output"
-    pandoc "$md_file" -o "$pdf_output" --pdf-engine=xelatex
+    cat "$md_file" | topdf "$pdf_output"
 done
 
 echo "Conversion complete!"
