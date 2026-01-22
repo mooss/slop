@@ -43,7 +43,7 @@ find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
     pdf_output="documenter/${pdf_name}"
 
     echo "Converting: $md_file -> $pdf_output"
-    pandoc "$md_file" -o "$pdf_output"
+    pandoc "$md_file" -o "$pdf_output" --pdf-engine=xelatex
 done
 
 echo "Conversion complete!"
