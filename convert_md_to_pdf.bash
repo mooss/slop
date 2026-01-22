@@ -23,7 +23,8 @@ mkdir -p documenter
 #################
 # Script proper #
 
-find "$BASE_PATH" -name "*.md" -type f | while read -r md_file; do
+# Skipping large files because they take too long and are probably not what we want.
+find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
     if [[ "$md_file" == *"/documenter/"* ]]; then
         continue
     fi
