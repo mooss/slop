@@ -28,7 +28,7 @@ function compile-markdown() {
     local pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
     pdf_name="${pdf_name%.md}.pdf"
     [[ -n "$PREFIX" ]] && pdf_name="${PREFIX}${pdf_name}"
-    local -r pdf_output="documenter/${pdf_name}"
+    local -r pdf_output="documentr/${pdf_name}"
 
     if [[ -f "$pdf_output" && "$pdf_output" -nt "$md_file" ]]; then
         echo "Skipping: $md_file is older than $pdf_output"
@@ -60,7 +60,7 @@ if [[ ! -d "$BASE_PATH" ]]; then
     exit 1
 fi
 
-mkdir -p documenter
+mkdir -vp documentr
 
 #################
 # Script proper #
