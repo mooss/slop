@@ -16,7 +16,8 @@ function branch-title() {
 
 function branch-section() {
     local -r branch="$1"
-    echo "### $(branch-title $branch) (\`$branch\`)"
+    echo "### $(branch-title $branch)"
+    echo "[\`$branch\`](https://github.com/mooss/slop/tree/$branch)"
 }
 
 function foreach() {
