@@ -18,13 +18,12 @@ function topdf(){
 }
 
 function compile-markdown() {
-    local -r md_file="$1"; local clean_path
-    # Compute a clean relative path (remove leading base path or "./").
-    if [[ "$md_file" == "$BASE_PATH"* ]]; then
-        clean_path="${md_file#$BASE_PATH/}"
-    else
-        clean_path="${md_file#./}"
-    fi
+    local -r md_file="$1"
+    local clean_path
+
+    clean_path="${md_file#$BASE_PATH}" # Strip the base path (whether absolute or relative).
+    clean_path="${clean_path#/}"
+    clean_path="${clean_path#./}"
 
     local pdf_name="${clean_path//\//#}" # Replace '/' with '#' in the path to put everything in a flat dir.
     pdf_name="${pdf_name%.md}.pdf"
@@ -41,6 +40,9 @@ function compile-markdown() {
     cat "$md_file" | topdf "$pdf_output"
 }
 
+# Export functions so they are available in subshells spawned by xargs.
+export -f topdf compile-markdown
+
 ######################
 # Arguments handling #
 
@@ -50,8 +52,8 @@ if [[ $# -lt 1 || $# -gt 2 ]]; then
     exit 1
 fi
 
-BASE_PATH="$1"
-PREFIX="${2:-}"   # Optional prefix; empty if not supplied
+export BASE_PATH="$1"
+export PREFIX="${2:-}" # Optional prefix; empty if not supplied.
 
 if [[ ! -d "$BASE_PATH" ]]; then
     echo "Error: '$BASE_PATH' is not a directory or does not exist." >&2
@@ -63,10 +65,8 @@ mkdir -p documenter
 #################
 # Script proper #
 
-# Skipping large files because they take too long and are probably not what we want.
-find "$BASE_PATH" -type f -name "*.md" -size 1M | while read -r md_file; do
-    compile-markdown "$md_file"
-done
+find "$BASE_PATH" -type f -name "*.md" -size 1M | grep -v node_modules | tr '\n' '\0' |
+    xargs -0 -P "$(nproc)" -I {} bash -c 'compile-markdown "$1"' _ {}
 
 echo "Conversion complete!"
 exit
