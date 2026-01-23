@@ -1,4 +1,4 @@
-# Bulk Markdown to PDF converter
+# Bulk Markdown to PDF compiler (podman, no parallelism, not tested)
 
 Recursively convert Markdown files to beautiful PDFs using Pandoc.
 All generated PDFs are placed in a single `documenter` directory.
