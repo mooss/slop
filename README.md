@@ -16,4 +16,5 @@ source .venv/bin/activate
 Usage:
 - `midi.py conv input.midi output.yaml`
 - `midi.py conv input.yaml output.midi`
+- `midi.py conv input.midi output.midi --format 0`  # convert MIDI to MIDI with format 0
 - `midi.py roundtrip input_file`   # verifies roundtrip conversion
