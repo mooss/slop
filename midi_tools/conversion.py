@@ -8,6 +8,9 @@ import yaml
 
 PathLike = Union[str, Path]
 
+MIDI_EXTENSIONS = (".mid", ".midi")
+YAML_EXTENSIONS = (".yaml", ".yml")
+
 
 def midi_to_yaml_data(midi: mido.MidiFile) -> dict[str, Any]:
     """Convert a mido.MidiFile to a YAML-serializable dict."""
@@ -56,7 +59,7 @@ def roundtrip(path: PathLike) -> None:
     path = Path(path)
     ext = path.suffix.lower()
 
-    if ext in (".mid", ".midi"):
+    if ext in MIDI_EXTENSIONS:
         original_bytes = path.read_bytes()
         midi = mido.MidiFile(file=io.BytesIO(original_bytes))
         data = midi_to_yaml_data(midi)
@@ -66,7 +69,7 @@ def roundtrip(path: PathLike) -> None:
         if out.getvalue() != original_bytes:
             raise RuntimeError("Roundtrip failed: MIDI output differs from input")
 
-    elif ext in (".yaml", ".yml"):
+    elif ext in YAML_EXTENSIONS:
         with open(path) as f:
             original_data = yaml.safe_load(f)
         midi = yaml_data_to_midi(original_data)
@@ -76,3 +79,19 @@ def roundtrip(path: PathLike) -> None:
 
     else:
         raise ValueError(f"Unknown extension: {ext}")
+
+
+def convert(input_path: PathLike, output_path: PathLike) -> None:
+    """Convert between MIDI and YAML based on file extensions."""
+    input_ext = Path(input_path).suffix.lower()
+    output_ext = Path(output_path).suffix.lower()
+
+    if input_ext in MIDI_EXTENSIONS and output_ext in YAML_EXTENSIONS:
+        midi_to_yaml(input_path, output_path)
+    elif input_ext in YAML_EXTENSIONS and output_ext in MIDI_EXTENSIONS:
+        yaml_to_midi(input_path, output_path)
+    else:
+        raise ValueError(
+            f"Cannot convert {input_ext!r} to {output_ext!r}; "
+            "expected MIDI (.mid/.midi) <-> YAML (.yaml/.yml)"
+        )

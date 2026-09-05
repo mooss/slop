@@ -14,5 +14,6 @@ source .venv/bin/activate
 `midi.py` converts from MIDI to YAML and vice-versa, giving some mean to visualize MIDI data as text.
 
 Usage:
-- `midi.py midi2yaml input.midi output.yaml`
-- `midi.py yaml2midi input.yaml output.midi`
+- `midi.py conv input.midi output.yaml`
+- `midi.py conv input.yaml output.midi`
+- `midi.py roundtrip input_file`   # verifies roundtrip conversion
