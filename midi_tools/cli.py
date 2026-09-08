@@ -1,9 +1,10 @@
 """Command-line interface for MIDI<->YAML conversion."""
 import argparse
 import sys
+import yaml
 from typing import Optional, Sequence
 
-from .conversion import convert, roundtrip
+from .conversion import convert, build_midi_stats, roundtrip
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -25,6 +26,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_rt = sub.add_parser("roundtrip", help="Roundtrip MIDI/YAML conversion")
     p_rt.add_argument("input_file")
 
+    p_stats = sub.add_parser("stats", help="Show statistics for a MIDI file")
+    p_stats.add_argument("input_file")
+
     return parser
 
 
@@ -37,6 +41,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             convert(args.input_file, args.output_file, midi_format=args.format)
         elif args.command == "roundtrip":
             roundtrip(args.input_file)
+        elif args.command == "stats":
+            stats = build_midi_stats(args.input_file)
+            print(yaml.safe_dump(stats))
     except (ValueError, RuntimeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

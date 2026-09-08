@@ -10,6 +10,8 @@ PathLike = Union[str, Path]
 
 MIDI_EXTENSIONS = (".mid", ".midi")
 YAML_EXTENSIONS = (".yaml", ".yml")
+MIDI_DEFAULT_TEMPO = 120.0
+MIDI_DEFAULT_TIME_SIGNATURE = "4/4"
 
 
 def _load_midi(source: Union[PathLike, io.BytesIO]) -> mido.MidiFile:
@@ -139,6 +141,35 @@ def roundtrip(path: PathLike) -> None:
 
     else:
         raise ValueError(f"Unknown extension: {ext}")
+
+
+def build_midi_stats(midi_path: PathLike) -> dict[str, Any]:
+    """Return useful statistics about a MIDI file."""
+    midi = _load_midi(midi_path)
+
+    tempos = []
+    time_signatures = []
+
+    for msg in _merge_tracks(midi.tracks):
+        if msg.type == "set_tempo":
+            bpm = round(60_000_000 / msg.tempo, 2)
+            tempos.append(bpm)
+        elif msg.type == "time_signature":
+            ts = f"{msg.numerator}/{msg.denominator}"
+            if ts not in time_signatures:
+                time_signatures.append(ts)
+
+    ntracks = len(midi.tracks)
+    if midi.type == 1:
+        ntracks -= 1
+
+    return {
+        "format": midi.type,
+        "ntracks": ntracks,
+        "duration": midi.length,
+        "bpm": tempos or [MIDI_DEFAULT_TEMPO],
+        "time_signatures": time_signatures or [MIDI_DEFAULT_TIME_SIGNATURE],
+    }
 
 
 def convert(input_path: PathLike, output_path: PathLike, midi_format: int = 1) -> None:
