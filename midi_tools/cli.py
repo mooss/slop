@@ -4,7 +4,8 @@ import sys
 import yaml
 from typing import Optional, Sequence
 
-from .conversion import convert, build_midi_stats, roundtrip
+from .conversion import convert, roundtrip
+from .stats import build_midi_stats
 
 
 def build_parser() -> argparse.ArgumentParser:

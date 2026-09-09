@@ -1,83 +1,18 @@
 """Conversion functions between MIDI and YAML representations."""
 import io
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 import mido
 import yaml
 
-from .constants import MIDI_PROGRAMS
-
-PathLike = Union[str, Path]
-
-MIDI_EXTENSIONS = (".mid", ".midi")
-YAML_EXTENSIONS = (".yaml", ".yml")
-MIDI_DEFAULT_TEMPO = 120.0
-MIDI_DEFAULT_TIME_SIGNATURE = "4/4"
-
-
-def _load_midi(source: Union[PathLike, io.BytesIO]) -> mido.MidiFile:
-    """Open a MIDI file and raise ValueError if its type/format is 2."""
-    if isinstance(source, (str, Path)):
-        midi = mido.MidiFile(str(source))
-    else:
-        midi = mido.MidiFile(file=source)
-    if midi.type == 2:
-        raise ValueError("MIDI format/type 2 is not supported")
-    return midi
-
-
-def _merge_tracks(tracks: list[mido.MidiTrack]) -> mido.MidiTrack:
-    """Merge multiple tracks into one track, sorted by absolute tick."""
-    if len(tracks) == 0:
-        return mido.MidiTrack()
-    if len(tracks) == 1:
-        return tracks[0]
-
-    events = []  # (absolute_time, track_index, message)
-    max_end_time = 0
-
-    for track_index, track in enumerate(tracks):
-        abs_time = 0
-        for msg in track:
-            abs_time += msg.time
-            if msg.type == "end_of_track":
-                max_end_time = max(max_end_time, abs_time)
-            else:
-                events.append((abs_time, track_index, msg))
-
-    # Make sure tempo/meta events are sorted before the rest to maintain the interpretation.
-    events.sort(key=lambda item: (item[0], 0 if item[2].is_meta else 1, item[1]))
-
-    merged = mido.MidiTrack()
-    current_time = 0
-    for abs_time, _, msg in events:
-        merged.append(msg.copy(time=abs_time - current_time))
-        current_time = abs_time
-
-    end_time = max(0, max_end_time - current_time)
-    merged.append(mido.MetaMessage("end_of_track", time=end_time))
-    return merged
-
-
-def _track_info(track: mido.MidiTrack) -> dict:
-    """Return track name and first program change info."""
-    name = None
-    program = None
-    for msg in track:
-        if msg.type == "track_name" and name is None:
-            name = msg.name
-        elif msg.type == "program_change" and program is None:
-            program = msg.program
-        if name is not None and program is not None:
-            break
-
-    return {
-        "name": name,
-        "program": program,
-        "program_name": MIDI_PROGRAMS.get(program) if program is not None else None,
-    }
-
+from .utils import (
+    PathLike,
+    MIDI_EXTENSIONS,
+    YAML_EXTENSIONS,
+    _load_midi,
+    _merge_tracks,
+)
 
 def midi_to_yaml_data(midi: mido.MidiFile) -> dict[str, Any]:
     """Convert a mido.MidiFile to a YAML-serializable dict."""
@@ -162,37 +97,6 @@ def roundtrip(path: PathLike) -> None:
 
     else:
         raise ValueError(f"Unknown extension: {ext}")
-
-
-def build_midi_stats(midi_path: PathLike) -> dict[str, Any]:
-    """Return useful statistics about a MIDI file."""
-    midi = _load_midi(midi_path)
-
-    tempos = []
-    time_signatures = []
-
-    for msg in _merge_tracks(midi.tracks):
-        if msg.type == "set_tempo":
-            bpm = round(60_000_000 / msg.tempo, 2)
-            tempos.append(bpm)
-        elif msg.type == "time_signature":
-            ts = f"{msg.numerator}/{msg.denominator}"
-            if ts not in time_signatures:
-                time_signatures.append(ts)
-
-    tracks = midi.tracks
-    if midi.type == 1:
-        tracks = tracks[1:]
-    ntracks = len(tracks)
-
-    return {
-        "format": midi.type,
-        "ntracks": ntracks,
-        "duration": midi.length,
-        "bpm": tempos or [MIDI_DEFAULT_TEMPO],
-        "time_signatures": time_signatures or [MIDI_DEFAULT_TIME_SIGNATURE],
-        "tracks": [_track_info(track) for track in tracks],
-    }
 
 
 def convert(input_path: PathLike, output_path: PathLike, midi_format: int = 1) -> None:
