@@ -1,0 +1,1879 @@
+# <?xml version="1.0"?>
+# <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+#          xmlns:mp="http://www.mutopiaproject.org/piece-data/0.1/">
+
+# <rdf:Description rdf:about=".">
+#     <mp:title>Chorale prelude “Wer nur den lieben Gott läßt walten”</mp:title>
+#     <mp:composer>BachJS</mp:composer>
+#     <mp:opus>BWV Anh. 691</mp:opus>
+#     <mp:lyricist/>
+#     <mp:for>Piano</mp:for>
+#     <mp:date/>
+#     <mp:style>Baroque</mp:style>
+#     <mp:metre/>
+#     <mp:arranger/>
+#     <mp:source>Bach-Gesellschaft Ausgabe 1851-1899 Band 43 (1894)</mp:source>
+#     <mp:licence>Public Domain</mp:licence>
+
+#     <mp:lyFile>BWV-691.ly</mp:lyFile>
+#     <mp:midFile>BWV-691.mid</mp:midFile>
+#     <mp:psFileA4>BWV-691-a4.ps.gz</mp:psFileA4>
+#     <mp:pdfFileA4>BWV-691-a4.pdf</mp:pdfFileA4>
+#     <mp:psFileLet>BWV-691-let.ps.gz</mp:psFileLet>
+#     <mp:pdfFileLet>BWV-691-let.pdf</mp:pdfFileLet>
+#     <mp:pngFile>BWV-691-preview.png</mp:pngFile>
+#     <mp:pngHeight>114</mp:pngHeight>
+#     <mp:pngWidth>539</mp:pngWidth>
+
+#     <mp:id>Mutopia-2009/01/06-1616</mp:id>
+#     <mp:maintainer>Steven McDougall</mp:maintainer>
+#     <mp:maintainerEmail>swmcd@world.std.com</mp:maintainerEmail>
+#     <mp:maintainerWeb>http://world.std.com/~swmcd/steven/</mp:maintainerWeb>
+#     <mp:moreInfo/>
+#     <mp:lilypondVersion>2.12.1</mp:lilypondVersion>
+# </rdf:Description>
+
+# </rdf:RDF>
+
+ticks_per_beat: 384
+tracks:
+- - name: control track
+    time: 0
+    type: track_name
+  - text: 'creator: '
+    time: 0
+    type: text
+  - text: 'GNU LilyPond 2.11.62          '
+    time: 0
+    type: text
+  - clocks_per_click: 18
+    denominator: 4
+    notated_32nd_notes_per_beat: 8
+    numerator: 4
+    time: 0
+    type: time_signature
+  - tempo: 1000000
+    time: 0
+    type: set_tempo
+  - time: 0
+    type: end_of_track
+- - name: upper
+    time: 0
+    type: track_name
+  - channel: 1
+    program: 6
+    time: 0
+    type: program_change
+  - name: harpsichord
+    time: 0
+    type: instrument_name
+  - key: C
+    time: 0
+    type: key_signature
+  - channel: 1
+    note: 60
+    time: 192
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 64
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 64
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 60
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 70
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 70
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 60
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 65
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 65
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 65
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 65
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 60
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 77
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 77
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 576
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 62
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 62
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 66
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 66
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 66
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 66
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 62
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 62
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 77
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 77
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 78
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 78
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 78
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 78
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 81
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 81
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 78
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 78
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 84
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 84
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 82
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 82
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 81
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 81
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 77
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 77
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 69
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 69
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 74
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 74
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 76
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 76
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 77
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 77
+    time: 96
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 79
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 79
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 67
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 71
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 62
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 71
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 62
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 72
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 1
+    note: 72
+    time: 1536
+    type: note_off
+    velocity: 64
+  - channel: 1
+    note: 64
+    time: 0
+    type: note_off
+    velocity: 64
+  - time: 0
+    type: end_of_track
+- - name: lower
+    time: 0
+    type: track_name
+  - channel: 2
+    program: 6
+    time: 0
+    type: program_change
+  - name: harpsichord
+    time: 0
+    type: instrument_name
+  - channel: 2
+    note: 36
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - key: C
+    time: 0
+    type: key_signature
+  - channel: 2
+    note: 36
+    time: 4608
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 60
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 54
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 54
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 54
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 54
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 57
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 57
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 54
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 54
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 62
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 62
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 54
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 54
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 57
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 57
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 45
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 45
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 45
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 45
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 54
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 54
+    time: 768
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 384
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 47
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 47
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 47
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 47
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 53
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 53
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 60
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 60
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 53
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 53
+    time: 1728
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 50
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 50
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 52
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 52
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 48
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 48
+    time: 192
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 55
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 55
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 43
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 43
+    time: 384
+    type: note_off
+    velocity: 64
+  - channel: 2
+    note: 36
+    time: 0
+    type: note_on
+    velocity: 127
+  - channel: 2
+    note: 36
+    time: 1536
+    type: note_off
+    velocity: 64
+  - time: 0
+    type: end_of_track
