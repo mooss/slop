@@ -6,6 +6,8 @@ from typing import Any, Union
 import mido
 import yaml
 
+from .constants import MIDI_PROGRAMS
+
 PathLike = Union[str, Path]
 
 MIDI_EXTENSIONS = (".mid", ".midi")
@@ -56,6 +58,25 @@ def _merge_tracks(tracks: list[mido.MidiTrack]) -> mido.MidiTrack:
     end_time = max(0, max_end_time - current_time)
     merged.append(mido.MetaMessage("end_of_track", time=end_time))
     return merged
+
+
+def _track_info(track: mido.MidiTrack) -> dict:
+    """Return track name and first program change info."""
+    name = None
+    program = None
+    for msg in track:
+        if msg.type == "track_name" and name is None:
+            name = msg.name
+        elif msg.type == "program_change" and program is None:
+            program = msg.program
+        if name is not None and program is not None:
+            break
+
+    return {
+        "name": name,
+        "program": program,
+        "program_name": MIDI_PROGRAMS.get(program) if program is not None else None,
+    }
 
 
 def midi_to_yaml_data(midi: mido.MidiFile) -> dict[str, Any]:
@@ -159,9 +180,10 @@ def build_midi_stats(midi_path: PathLike) -> dict[str, Any]:
             if ts not in time_signatures:
                 time_signatures.append(ts)
 
-    ntracks = len(midi.tracks)
+    tracks = midi.tracks
     if midi.type == 1:
-        ntracks -= 1
+        tracks = tracks[1:]
+    ntracks = len(tracks)
 
     return {
         "format": midi.type,
@@ -169,6 +191,7 @@ def build_midi_stats(midi_path: PathLike) -> dict[str, Any]:
         "duration": midi.length,
         "bpm": tempos or [MIDI_DEFAULT_TEMPO],
         "time_signatures": time_signatures or [MIDI_DEFAULT_TIME_SIGNATURE],
+        "tracks": [_track_info(track) for track in tracks],
     }
 
 
