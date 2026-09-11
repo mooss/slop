@@ -50,14 +50,35 @@ def save_midyaml(data: Dict[str, Any], destination: FileLike) -> None:
 
 class Mir:
     """Canonical in-memory MIDI representation used by all operations."""
+
+    @property
+    def midi_format(self) -> int:
+        return self._midi_format
+
+    @midi_format.setter
+    def midi_format(self, value: int) -> None:
+        if value == 2: raise ValueError("MIDI format/type 2 is not supported")
+        if value not in (0, 1): raise ValueError(f"Invalid MIDI format {value}, only 0 and 1 are valid and supported")
+
+        previous = getattr(self, "_midi_format", None)
+        if previous == value:
+            return
+        if previous == 1 and value == 0:
+            self.tracks = self.merge_tracks().tracks
+        elif previous == 0 and value == 1:
+            raise NotImplementedError("conversion from MIDI format 0 to format 1 is not implemented")
+        self._midi_format = value
+
+    def set_midi_format(self, value: int) -> "Mir":
+        self.midi_format = value
+        return self
+
     def __init__(
         self,
         midi_format: int,
         ticks_per_beat: int,
         tracks: List[List[Any]],
     ) -> None:
-        if midi_format == 2:
-            raise ValueError("MIDI format/type 2 is not supported")
         self.midi_format = midi_format
         self.ticks_per_beat = ticks_per_beat
         self.tracks = tracks
@@ -106,22 +127,16 @@ class Mir:
         }
 
 
-    def to_mido(self, midi_format: int = 1) -> mido.MidiFile:
-        if midi_format not in (0, 1):
-            raise ValueError("MIDI format/type 2 is not supported")
-        midi = mido.MidiFile(type=midi_format, ticks_per_beat=self.ticks_per_beat)
-        if midi_format == 0:
-            merged = self.merge_tracks()
-            midi.tracks = [self._to_midi_track(merged.tracks[0])]
-        else:
-            midi.tracks = [self._to_midi_track(track) for track in self.tracks]
+    def to_mido(self) -> mido.MidiFile:
+        midi = mido.MidiFile(type=self.midi_format, ticks_per_beat=self.ticks_per_beat)
+        midi.tracks = [self._to_midi_track(track) for track in self.tracks]
         return midi
 
 
-    def to_disk(self, path: PathLike, midi_format: int = 1) -> None:
+    def to_disk(self, path: PathLike) -> None:
         match path_to_dialect(path):
             case MirDialect.MIDI:
-                save_midi(self.to_mido(midi_format), path)
+                save_midi(self.to_mido(), path)
             case MirDialect.RAWYAML:
                 save_midyaml(self.to_dict(), path)
             case _:
@@ -131,7 +146,7 @@ class Mir:
     def to_io(self, file: IO, dialect: MirDialect) -> None:
         match dialect:
             case MirDialect.MIDI:
-                save_midi(self.to_mido(self.midi_format), file)
+                save_midi(self.to_mido(), file)
             case MirDialect.RAWYAML:
                 save_midyaml(self.to_dict(), file)
 
@@ -192,7 +207,7 @@ class Mir:
         return {
             "format": self.midi_format,
             "ntracks": ntracks,
-            "duration": self.to_mido(self.midi_format).length,
+            "duration": self.to_mido().length,
             "bpm": tempos or [MIDI_DEFAULT_TEMPO],
             "time_signatures": time_signatures or [MIDI_DEFAULT_TIME_SIGNATURE],
             "tracks": [self._track_info(track) for track in tracks],

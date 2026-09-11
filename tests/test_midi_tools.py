@@ -135,7 +135,8 @@ def test_convert_midi_to_midi_format_0(partition, tmp_path):
     mir.to_mido().save(str(midi_path))
 
     mir2 = Mir.from_disk(midi_path)
-    mir2.to_mido(midi_format=0).save(str(midi0_path))
+    mir2.midi_format = 0
+    mir2.to_mido().save(str(midi0_path))
 
     midi = mido.MidiFile(str(midi0_path))
     assert midi.type == 0
@@ -148,7 +149,7 @@ def test_convert_midi_to_midi_format_0(partition, tmp_path):
 
 def test_partition_to_midi_format_0_merges_tracks(partition):
     """Requesting format 0 should produce a single merged track."""
-    midi = Mir.from_dict(partition).to_mido(midi_format=0)
+    midi = Mir.from_dict(partition).set_midi_format(0).to_mido()
     assert midi.type == 0
     assert len(midi.tracks) == 1
 
