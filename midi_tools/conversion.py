@@ -11,4 +11,4 @@ def convert(input_path: PathLike, output_path: PathLike, midi_format: int = 1) -
     if in_path.resolve() == out_path.resolve():
         raise ValueError("Input and output files must be different")
 
-    Mir.from_disk(in_path).to_disk(out_path, midi_format)
+    Mir.from_disk(in_path).set_midi_format(midi_format).to_disk(out_path)
