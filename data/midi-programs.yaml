@@ -1,4 +1,4 @@
-# This table is number from 1 to 128, but the actual MIDI data is from 0 to 127.
+# This table is numbered from 1 to 128, but the actual MIDI data is from 0 to 127.
 # Taken from Wikipedia on 2026-09-08 (https://en.wikipedia.org/wiki/General_MIDI).
 
 # Piano.

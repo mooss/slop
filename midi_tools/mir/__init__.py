@@ -17,6 +17,9 @@ from midi_tools.utils import (
     _load_mido,
 )
 
+# MIDI channel 10 is 1-based; mido channel numbers are 0-based.
+PERCUSSION_CHANNEL = 9
+
 
 class MirDialect(Enum):
     MIDI = 1
@@ -232,20 +235,22 @@ class Mir:
 
     @staticmethod
     def _track_info(track: List[Any]) -> Dict[str, Any]:
-        """Return the name, program, and program name for a track."""
+        """Return the name, program, program name, and percussion for a track."""
         name = None
         program = None
+        has_percussions = False
         for msg in track:
             if msg.type == "track_name" and name is None:
                 name = msg.name
             elif msg.type == "program_change" and program is None:
                 program = msg.program
-            if name is not None and program is not None:
-                break
+            elif msg.type == "note_on" and getattr(msg, "channel", None) == PERCUSSION_CHANNEL:
+                has_percussions = True
         return {
             "name": name,
             "program": program,
             "program_name": MIDI_PROGRAMS.get(program) if program is not None else None,
+            "has_percussions": has_percussions,
         }
 
 

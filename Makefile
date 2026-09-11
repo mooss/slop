@@ -1,10 +1,13 @@
 PYTHON := .venv/bin/python
 
-.PHONY: setup test clean
+.PHONY: setup constants test clean
 
 setup:
 	uv venv --allow-existing .venv
 	uv pip install --python $(PYTHON) mido pyyaml pytest
+
+constants:
+	$(PYTHON) scripts/instantiate-constants.py
 
 test:
 	$(PYTHON) -m pytest

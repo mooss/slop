@@ -56,6 +56,28 @@ def test_stats_track_info(partition, tmp_path):
     assert tracks[1]["name"] == "lower"
     assert tracks[1]["program"] == 6
     assert tracks[1]["program_name"] == "Harpsichord"
+    assert tracks[0]["has_percussions"] == False
+    assert tracks[1]["has_percussions"] == False
+
+
+def test_stats_percussion_track_info(tmp_path):
+    """Channel-10 notes should flag the track as having percussions."""
+    midi = mido.MidiFile(type=0, ticks_per_beat=480)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("track_name", name="drums", time=0))
+    track.append(mido.Message("note_on", note=38, velocity=100, time=0, channel=9))
+    track.append(mido.Message("note_on", note=35, velocity=100, time=0, channel=9))
+    track.append(mido.Message("note_off", note=35, velocity=0, time=10, channel=9))
+    track.append(mido.Message("note_off", note=38, velocity=0, time=10, channel=9))
+    track.append(mido.MetaMessage("end_of_track", time=0))
+    midi.tracks.append(track)
+
+    midi_path = tmp_path / "drums.mid"
+    midi.save(str(midi_path))
+
+    stats = Mir.from_disk(midi_path).stats()
+    assert stats["tracks"][0]["has_percussions"] == True
+
 
 
 def test_stats_defaults_without_meta(tmp_path):
