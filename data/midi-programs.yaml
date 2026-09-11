@@ -1,5 +1,5 @@
 # This table is number from 1 to 128, but the actual MIDI data is from 0 to 127.
-# Taken from Wikipedia on 2026-09-08.
+# Taken from Wikipedia on 2026-09-08 (https://en.wikipedia.org/wiki/General_MIDI).
 
 # Piano.
 1: "Acoustic Grand Piano"
@@ -19,7 +19,7 @@
 13: "Marimba"
 14: "Xylophone"
 15: "Tubular Bells"
-16: "Dulcimer or Santoor"
+16: "Dulcimer"
 
 # Organ.
 17: "Drawbar Organ"
@@ -68,8 +68,8 @@
 51: "Synth Strings 1"
 52: "Synth Strings 2"
 53: "Choir Aahs"
-54: "Voice Oohs or Doos"
-55: "Synth Voice or Synth Choir"
+54: "Voice Oohs"
+55: "Synth Voice"
 56: "Orchestra Hit"
 
 # Brass.
@@ -144,10 +144,10 @@
 
 # Percussive.
 113: "Tinkle Bell"
-114: "Agogô or cowbell"
+114: "Agogô"
 115: "Steel Drums"
 116: "Woodblock"
-117: "Taiko Drum or Surdo"
+117: "Taiko Drum"
 118: "Melodic Tom"
 119: "Synth Drum"
 120: "Reverse Cymbal"

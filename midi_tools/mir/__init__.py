@@ -1,0 +1,227 @@
+"""MIDI Intermediate Representation (Mir)."""
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, IO, List, Optional
+
+import mido
+import yaml
+
+from midi_tools.constants import MIDI_PROGRAMS
+from midi_tools.utils import (
+    MIDI_DEFAULT_TEMPO,
+    MIDI_DEFAULT_TIME_SIGNATURE,
+    MIDI_EXTENSIONS,
+    YAML_EXTENSIONS,
+    FileLike,
+    PathLike,
+    _load_mido,
+)
+
+
+class MirDialect(Enum):
+    MIDI = 1
+    RAWYAML = 2
+
+
+def path_to_dialect(path: PathLike) -> Optional[MirDialect]:
+    path = Path(path)
+    ext = path.suffix.lower()
+    if ext in MIDI_EXTENSIONS:
+        return MirDialect.MIDI
+    elif ext in YAML_EXTENSIONS:
+        return MirDialect.RAWYAML
+    return None
+
+
+def save_midi(data: mido.MidiFile, destination: FileLike) -> None:
+    if isinstance(destination, (str, Path)):
+        data.save(str(destination))
+    else:
+        data.save(file=destination)
+
+
+def save_midyaml(data: Dict[str, Any], destination: FileLike) -> None:
+    if isinstance(destination, (str, Path)):
+        with open(str(destination), "w") as f:
+            yaml.safe_dump(data, f)
+    else:
+        yaml.safe_dump(data, destination)
+
+
+class Mir:
+    """Canonical in-memory MIDI representation used by all operations."""
+    def __init__(
+        self,
+        midi_format: int,
+        ticks_per_beat: int,
+        tracks: List[List[Any]],
+    ) -> None:
+        if midi_format == 2:
+            raise ValueError("MIDI format/type 2 is not supported")
+        self.midi_format = midi_format
+        self.ticks_per_beat = ticks_per_beat
+        self.tracks = tracks
+
+    ##########################
+    # from_... class methods #
+
+    @classmethod
+    def from_disk(cls, path: PathLike) -> "Mir":
+        match path_to_dialect(path):
+            case MirDialect.MIDI:
+                return Mir.from_mido(_load_mido(path))
+            case MirDialect.RAWYAML:
+                with open(path) as f:
+                    return Mir.from_dict(yaml.safe_load(f))
+
+        raise ValueError(f"from_disk: cannot deduce Mir format from filename: {path}")
+
+
+    @classmethod
+    def from_mido(cls, midi: mido.MidiFile) -> "Mir":
+        tracks = [[msg.copy() for msg in track] for track in midi.tracks]
+        return cls(midi.type, midi.ticks_per_beat, tracks)
+
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Mir":
+        tracks = []
+        for track_data in data["tracks"]:
+            track = []
+            for msg_dict in track_data:
+                try:
+                    track.append(mido.Message(**msg_dict))
+                except LookupError:
+                    track.append(mido.MetaMessage(**msg_dict))
+            tracks.append(track)
+        return cls(1, data["ticks_per_beat"], tracks)
+
+    ##################
+    # to_... methods #
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "ticks_per_beat": self.ticks_per_beat,
+            "tracks": [[msg.dict() for msg in track] for track in self.tracks],
+        }
+
+
+    def to_mido(self, midi_format: int = 1) -> mido.MidiFile:
+        if midi_format not in (0, 1):
+            raise ValueError("MIDI format/type 2 is not supported")
+        midi = mido.MidiFile(type=midi_format, ticks_per_beat=self.ticks_per_beat)
+        if midi_format == 0:
+            merged = self.merge_tracks()
+            midi.tracks = [self._to_midi_track(merged.tracks[0])]
+        else:
+            midi.tracks = [self._to_midi_track(track) for track in self.tracks]
+        return midi
+
+
+    def to_disk(self, path: PathLike, midi_format: int = 1) -> None:
+        match path_to_dialect(path):
+            case MirDialect.MIDI:
+                save_midi(self.to_mido(midi_format), path)
+            case MirDialect.RAWYAML:
+                save_midyaml(self.to_dict(), path)
+            case _:
+                raise ValueError(f"to_disk: cannot deduce Mir format from filename: {path}")
+
+
+    def to_io(self, file: IO, dialect: MirDialect) -> None:
+        match dialect:
+            case MirDialect.MIDI:
+                save_midi(self.to_mido(self.midi_format), file)
+            case MirDialect.RAWYAML:
+                save_midyaml(self.to_dict(), file)
+
+    ##############
+    # Operations #
+
+    def merge_tracks(self) -> "Mir":
+        """Return a new Mir with all tracks merged into one, sorted by tick.
+        """
+        if not self.tracks:
+            return Mir(0, self.ticks_per_beat, [[]])
+        if len(self.tracks) == 1:
+            return Mir(self.midi_format, self.ticks_per_beat, [self.tracks[0]])
+
+        events = []
+        max_end_time = 0
+
+        for track_index, track in enumerate(self.tracks):
+            abs_time = 0
+            for msg in track:
+                abs_time += msg.time
+                if msg.type == "end_of_track":
+                    max_end_time = max(max_end_time, abs_time)
+                else:
+                    events.append((abs_time, track_index, msg))
+
+        events.sort(key=lambda item: (item[0], 0 if item[2].is_meta else 1, item[1]))
+
+        merged = []
+        current_time = 0
+        for abs_time, _, msg in events:
+            merged.append(msg.copy(time=abs_time - current_time))
+            current_time = abs_time
+
+        end_time = max(0, max_end_time - current_time)
+        merged.append(mido.MetaMessage("end_of_track", time=end_time))
+        return Mir(0, self.ticks_per_beat, [merged])
+
+
+    def stats(self) -> Dict[str, Any]:
+        """Compute statistics entirely from this Mir."""
+        tempos = []
+        time_signatures = []
+
+        for msg in self.merge_tracks().tracks[0]:
+            if msg.type == "set_tempo":
+                tempos.append(round(60_000_000 / msg.tempo, 2))
+            elif msg.type == "time_signature":
+                ts = f"{msg.numerator}/{msg.denominator}"
+                if ts not in time_signatures:
+                    time_signatures.append(ts)
+
+        tracks = self.tracks
+        if self.midi_format == 1:
+            tracks = tracks[1:]
+        ntracks = len(tracks)
+
+        return {
+            "format": self.midi_format,
+            "ntracks": ntracks,
+            "duration": self.to_mido(self.midi_format).length,
+            "bpm": tempos or [MIDI_DEFAULT_TEMPO],
+            "time_signatures": time_signatures or [MIDI_DEFAULT_TIME_SIGNATURE],
+            "tracks": [self._track_info(track) for track in tracks],
+        }
+
+    ######################
+    # Private workhorses #
+
+    @staticmethod
+    def _track_info(track: List[Any]) -> Dict[str, Any]:
+        name = None
+        program = None
+        for msg in track:
+            if msg.type == "track_name" and name is None:
+                name = msg.name
+            elif msg.type == "program_change" and program is None:
+                program = msg.program
+            if name is not None and program is not None:
+                break
+        return {
+            "name": name,
+            "program": program,
+            "program_name": MIDI_PROGRAMS.get(program) if program is not None else None,
+        }
+
+
+    @staticmethod
+    def _to_midi_track(track: List[Any]) -> mido.MidiTrack:
+        midi_track = mido.MidiTrack()
+        for msg in track:
+            midi_track.append(msg.copy())
+        return midi_track
