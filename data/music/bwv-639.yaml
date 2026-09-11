@@ -35,6 +35,7 @@
 
 # </rdf:RDF>
 
+midi_format: 1
 ticks_per_beat: 384
 tracks:
 - - name: control track

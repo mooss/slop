@@ -124,7 +124,7 @@ class Mir:
                 except LookupError:
                     track.append(mido.MetaMessage(**msg_dict))
             tracks.append(track)
-        return cls(1, data["ticks_per_beat"], tracks)
+        return cls(data.get("midi_format", 1), data["ticks_per_beat"], tracks)
 
     ##################
     # to_... methods #
@@ -132,6 +132,7 @@ class Mir:
     def to_dict(self) -> Dict[str, Any]:
         """Return a dictionary representation of this Mir."""
         return {
+            "midi_format": self.midi_format,
             "ticks_per_beat": self.ticks_per_beat,
             "tracks": [[msg.dict() for msg in track] for track in self.tracks],
         }
