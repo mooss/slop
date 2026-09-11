@@ -24,6 +24,7 @@ class MirDialect(Enum):
 
 
 def path_to_dialect(path: PathLike) -> Optional[MirDialect]:
+    """Return the Mir dialect implied by the file extension, or None if unknown."""
     path = Path(path)
     ext = path.suffix.lower()
     if ext in MIDI_EXTENSIONS:
@@ -34,6 +35,7 @@ def path_to_dialect(path: PathLike) -> Optional[MirDialect]:
 
 
 def save_midi(data: mido.MidiFile, destination: FileLike) -> None:
+    """Save a MidiFile to a path or file-like object."""
     if isinstance(destination, (str, Path)):
         data.save(str(destination))
     else:
@@ -41,6 +43,7 @@ def save_midi(data: mido.MidiFile, destination: FileLike) -> None:
 
 
 def save_midyaml(data: Dict[str, Any], destination: FileLike) -> None:
+    """Save a Mir dictionary as YAML to a path or file-like object."""
     if isinstance(destination, (str, Path)):
         with open(str(destination), "w") as f:
             yaml.safe_dump(data, f)
@@ -53,10 +56,12 @@ class Mir:
 
     @property
     def midi_format(self) -> int:
+        """Return the MIDI file format (0 or 1)."""
         return self._midi_format
 
     @midi_format.setter
     def midi_format(self, value: int) -> None:
+        """Set the MIDI file format, converting tracks when changing to format 0."""
         if value == 2: raise ValueError("MIDI format/type 2 is not supported")
         if value not in (0, 1): raise ValueError(f"Invalid MIDI format {value}, only 0 and 1 are valid and supported")
 
@@ -70,6 +75,7 @@ class Mir:
         self._midi_format = value
 
     def set_midi_format(self, value: int) -> "Mir":
+        """Set the MIDI format and return this Mir for chaining."""
         self.midi_format = value
         return self
 
@@ -88,6 +94,7 @@ class Mir:
 
     @classmethod
     def from_disk(cls, path: PathLike) -> "Mir":
+        """Load a Mir from a MIDI or YAML file on disk."""
         match path_to_dialect(path):
             case MirDialect.MIDI:
                 return Mir.from_mido(_load_mido(path))
@@ -100,12 +107,14 @@ class Mir:
 
     @classmethod
     def from_mido(cls, midi: mido.MidiFile) -> "Mir":
+        """Create a Mir from a mido.MidiFile."""
         tracks = [[msg.copy() for msg in track] for track in midi.tracks]
         return cls(midi.type, midi.ticks_per_beat, tracks)
 
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Mir":
+        """Create a Mir from a dictionary representation."""
         tracks = []
         for track_data in data["tracks"]:
             track = []
@@ -121,6 +130,7 @@ class Mir:
     # to_... methods #
 
     def to_dict(self) -> Dict[str, Any]:
+        """Return a dictionary representation of this Mir."""
         return {
             "ticks_per_beat": self.ticks_per_beat,
             "tracks": [[msg.dict() for msg in track] for track in self.tracks],
@@ -128,12 +138,14 @@ class Mir:
 
 
     def to_mido(self) -> mido.MidiFile:
+        """Return a mido.MidiFile representation of this Mir."""
         midi = mido.MidiFile(type=self.midi_format, ticks_per_beat=self.ticks_per_beat)
         midi.tracks = [self._to_midi_track(track) for track in self.tracks]
         return midi
 
 
     def to_disk(self, path: PathLike) -> None:
+        """Write this Mir to disk as MIDI or YAML based on the file extension."""
         match path_to_dialect(path):
             case MirDialect.MIDI:
                 save_midi(self.to_mido(), path)
@@ -144,6 +156,7 @@ class Mir:
 
 
     def to_io(self, file: IO, dialect: MirDialect) -> None:
+        """Write this Mir to a file-like object in the given dialect."""
         match dialect:
             case MirDialect.MIDI:
                 save_midi(self.to_mido(), file)
@@ -218,6 +231,7 @@ class Mir:
 
     @staticmethod
     def _track_info(track: List[Any]) -> Dict[str, Any]:
+        """Return the name, program, and program name for a track."""
         name = None
         program = None
         for msg in track:
@@ -236,6 +250,7 @@ class Mir:
 
     @staticmethod
     def _to_midi_track(track: List[Any]) -> mido.MidiTrack:
+        """Convert a list of messages into a mido.MidiTrack."""
         midi_track = mido.MidiTrack()
         for msg in track:
             midi_track.append(msg.copy())
