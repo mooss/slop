@@ -9,7 +9,8 @@ PathLike = Union[str, Path]
 FileLike = Union[PathLike, IO]
 
 MIDI_EXTENSIONS = (".mid", ".midi")
-YAML_EXTENSIONS = (".yaml", ".yml")
+MIDRAW_YAML_EXTENSION = ".midraw.yaml"
+MIDENSE_YAML_EXTENSION = ".midense.yaml"
 MIDI_DEFAULT_TEMPO = 120.0
 MIDI_DEFAULT_TIME_SIGNATURE = "4/4"
 

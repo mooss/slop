@@ -7,11 +7,13 @@ import mido
 import yaml
 
 from midi_tools.constants import MIDI_PROGRAMS
+from midi_tools.mir.dense import dense_to_raw, raw_to_dense
 from midi_tools.utils import (
     MIDI_DEFAULT_TEMPO,
     MIDI_DEFAULT_TIME_SIGNATURE,
     MIDI_EXTENSIONS,
-    YAML_EXTENSIONS,
+    MIDENSE_YAML_EXTENSION,
+    MIDRAW_YAML_EXTENSION,
     FileLike,
     PathLike,
     _load_mido,
@@ -24,16 +26,18 @@ PERCUSSION_CHANNEL = 9
 class MirDialect(Enum):
     MIDI = 1
     RAWYAML = 2
+    DENSEYAML = 3
 
 
 def path_to_dialect(path: PathLike) -> Optional[MirDialect]:
-    """Return the Mir dialect implied by the file extension, or None if unknown."""
-    path = Path(path)
-    ext = path.suffix.lower()
-    if ext in MIDI_EXTENSIONS:
-        return MirDialect.MIDI
-    elif ext in YAML_EXTENSIONS:
+    """Return the Mir dialect implied by the file name, or None if unknown."""
+    name = Path(path).name.lower()
+    if name.endswith(MIDENSE_YAML_EXTENSION):
+        return MirDialect.DENSEYAML
+    if name.endswith(MIDRAW_YAML_EXTENSION):
         return MirDialect.RAWYAML
+    if Path(path).suffix.lower() in MIDI_EXTENSIONS:
+        return MirDialect.MIDI
     return None
 
 
@@ -104,6 +108,9 @@ class Mir:
             case MirDialect.RAWYAML:
                 with open(path) as f:
                     return Mir.from_dict(yaml.safe_load(f))
+            case MirDialect.DENSEYAML:
+                with open(path) as f:
+                    return Mir.from_dense(yaml.safe_load(f))
 
         raise ValueError(f"from_disk: cannot deduce Mir format from filename: {path}")
 
@@ -129,6 +136,11 @@ class Mir:
             tracks.append(track)
         return cls(data.get("midi_format", 1), data["ticks_per_beat"], tracks)
 
+    @classmethod
+    def from_dense(cls, data: Dict[str, Any]) -> "Mir":
+        """Create a Mir from a dense dictionary representation."""
+        return cls.from_dict(dense_to_raw(data))
+
     ##################
     # to_... methods #
 
@@ -139,6 +151,10 @@ class Mir:
             "ticks_per_beat": self.ticks_per_beat,
             "tracks": [[msg.dict() for msg in track] for track in self.tracks],
         }
+
+    def to_dense(self) -> Dict[str, Any]:
+        """Return a dense dictionary representation of this Mir."""
+        return raw_to_dense(self.to_dict())
 
 
     def to_mido(self) -> mido.MidiFile:
@@ -155,6 +171,8 @@ class Mir:
                 save_midi(self.to_mido(), path)
             case MirDialect.RAWYAML:
                 save_midyaml(self.to_dict(), path)
+            case MirDialect.DENSEYAML:
+                save_midyaml(self.to_dense(), path)
             case _:
                 raise ValueError(f"to_disk: cannot deduce Mir format from filename: {path}")
 
@@ -166,6 +184,8 @@ class Mir:
                 save_midi(self.to_mido(), file)
             case MirDialect.RAWYAML:
                 save_midyaml(self.to_dict(), file)
+            case MirDialect.DENSEYAML:
+                save_midyaml(self.to_dense(), file)
 
     ##############
     # Operations #

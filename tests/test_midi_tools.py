@@ -2,6 +2,7 @@ import mido
 import pytest
 import yaml
 
+from midi_tools.conversion import convert
 from midi_tools.mir import Mir
 
 ###################
@@ -121,9 +122,9 @@ def test_stats_rejects_type_2(tmp_path):
 
 def test_convert_yaml_to_midi_and_back(partition, tmp_path):
     """Convert YAML->MIDI and MIDI->YAML should produce identical YAML."""
-    yaml_path = tmp_path / "input.yaml"
+    yaml_path = tmp_path / "input.midraw.yaml"
     midi_path = tmp_path / "output.mid"
-    yaml_out_path = tmp_path / "output.yaml"
+    yaml_out_path = tmp_path / "output.midraw.yaml"
 
     # Write YAML data to file
     with open(yaml_path, "w") as f:
@@ -146,7 +147,7 @@ def test_convert_yaml_to_midi_and_back(partition, tmp_path):
 
 def test_convert_midi_to_midi_format_0(partition, tmp_path):
     """MIDI -> MIDI conversion should be able to change format to 0."""
-    yaml_path = tmp_path / "input.yaml"
+    yaml_path = tmp_path / "input.midraw.yaml"
     midi_path = tmp_path / "output.mid"
     midi0_path = tmp_path / "output0.mid"
 
@@ -213,3 +214,82 @@ def test_mir_rejects_unknown_extension(tmp_path):
 
     with pytest.raises(ValueError):
         Mir.from_disk(input_path)
+
+
+def test_mir_rejects_plain_yaml_extension(tmp_path):
+    """Generic .yaml is not a dialect; the extension must be .midraw.yaml/.midense.yaml."""
+    path = tmp_path / "input.yaml"
+    path.write_text("ticks_per_beat: 480\n")
+    with pytest.raises(ValueError):
+        Mir.from_disk(path)
+
+
+################
+# Dense tests #
+################
+
+def test_dense_roundtrip_stable(partition):
+    """dense -> Mir -> dense must be stable."""
+    dense = Mir.from_dict(partition).to_dense()
+    assert Mir.from_dense(dense).to_dense() == dense
+
+
+def test_dense_example_to_raw():
+    """A dense document must produce the expected messages, with default channel injected."""
+    dense = {
+        "ticks_per_beat": 480,
+        "meta_track": {0: {"set_tempo": 500000, "time_signature": [4, 4, 24, 8]}},
+        "tracks": [{"name": "upper", "channel": 0,
+                    "events": ["0 pc 6", "0 on 64 107", "120 off 64", "0 eot"]}],
+    }
+    raw = Mir.from_dense(dense).to_dict()
+    assert raw["midi_format"] == 1
+    track = raw["tracks"][1]
+    assert [msg["type"] for msg in track] == [
+        "track_name", "program_change", "note_on", "note_off", "end_of_track"]
+    assert track[2]["channel"] == 0   # default channel added on note_on only
+    assert track[3]["velocity"] == 0  # bare `off` gets velocity 0
+
+
+def test_dense_unknown_command_raises():
+    dense = {"ticks_per_beat": 480, "tracks": [{"channel": 0, "events": ["0 foo 1"]}]}
+    with pytest.raises(ValueError, match="unknown event command"):
+        Mir.from_dense(dense)
+
+
+def test_dense_rejects_non_format_1(partition):
+    mir = Mir.from_dict(partition).set_midi_format(0)
+    with pytest.raises(ValueError, match="format 1"):
+        mir.to_dense()
+
+
+def test_convert_raw_to_dense(partition, tmp_path):
+    raw_path = tmp_path / "song.midraw.yaml"
+    dense_path = tmp_path / "song.midense.yaml"
+    with open(raw_path, "w") as f:
+        yaml.safe_dump(partition, f)
+    original = Mir.from_disk(raw_path)
+    convert(str(raw_path), str(dense_path))
+    assert Mir.from_disk(dense_path).to_dense() == original.to_dense()
+
+
+def test_dense_port_event_roundtrip():
+    """A midi_port meta event should survive a dense roundtrip."""
+    raw = {
+        "midi_format": 1,
+        "ticks_per_beat": 480,
+        "tracks": [
+            [
+                {"type": "midi_port", "port": 3, "time": 0},
+                {"type": "end_of_track", "time": 0},
+            ],
+            [
+                {"type": "track_name", "name": "Test", "time": 0},
+                {"type": "end_of_track", "time": 0},
+            ],
+        ],
+    }
+
+    mir = Mir.from_dict(raw)
+    dense = mir.to_dense()
+    assert Mir.from_dense(dense).to_dict() == raw
