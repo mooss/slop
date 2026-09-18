@@ -22,6 +22,12 @@ META_ATTRS = {
     "sequencer_specific": ("data",),
 }
 
+# Meta types whose single attribute is a string value.
+STRING_META_TYPES = {
+    "text", "copyright", "track_name", "instrument_name", "lyrics",
+    "marker", "cue_marker", "device_name", "key_signature",
+}
+
 # Dense event command -> (mido message type, attribute names).
 CHANNEL_CMDS = {
     "on": ("note_on", ("note", "velocity")),
@@ -75,6 +81,18 @@ def _meta_msg(meta_type: str, value: Any) -> Dict[str, Any]:
     return {"type": meta_type, **dict(zip(attrs, values))}
 
 
+def _format_meta_event(time: int, msg: Dict[str, Any]) -> str:
+    meta_type = msg["type"]
+    attrs = META_ATTRS[meta_type]
+    if meta_type in STRING_META_TYPES:
+        return f"{time} {meta_type} {msg[attrs[0]]}"
+    if meta_type == "sequencer_specific":
+        data = " ".join(str(b) for b in msg["data"])
+        return f"{time} sequencer_specific {data}" if data else f"{time} sequencer_specific"
+    values = [msg[a] for a in attrs]
+    return f"{time} {meta_type} " + " ".join(str(v) for v in values)
+
+
 def _parse_event(event: Any, default_channel: int) -> Dict[str, Any]:
     """Parse one dense event string into a raw message dict."""
     tokens = str(event).split()
@@ -95,6 +113,18 @@ def _parse_event(event: Any, default_channel: int) -> Dict[str, Any]:
             raise ValueError(f"dense: command {cmd!r} takes one integer value in event {event!r}")
         attr = META_ATTRS[VALUE_CMDS[cmd]][0]
         return {"type": VALUE_CMDS[cmd], attr: _int(args[0], event), "time": time}
+    if cmd in META_ATTRS:
+        attrs = META_ATTRS[cmd]
+        if cmd in STRING_META_TYPES:
+            return {"type": cmd, attrs[0]: " ".join(args), "time": time}
+        if cmd == "sequencer_specific":
+            return {"type": cmd, "data": [_int(a, event) for a in args], "time": time}
+        if len(args) != len(attrs):
+            raise ValueError(
+                f"dense: command {cmd!r} takes {len(attrs)} values ({', '.join(attrs)}) in event {event!r}"
+            )
+        values = [_int(a, event) for a in args]
+        return {"type": cmd, "time": time, **dict(zip(attrs, values))}
     if cmd in CHANNEL_CMDS:
         channel = default_channel
         if args and args[-1].startswith("@"):
@@ -208,11 +238,14 @@ def _raw_to_dense_track(track: List[Dict[str, Any]]) -> Dict[str, Any]:
         if meta_type == "end_of_track":
             events.append(f"{time} eot")
         elif meta_type == "sysex":
-            events.append(" ".join([str(time), "sx", *(str(b) for b in msg["data"])]))
+            data_str = " ".join(str(b) for b in msg["data"])
+            events.append(f"{time} sx {data_str}" if data_str else f"{time} sx")
         elif meta_type in CMD_BY_TEXT_TYPE:
             events.append(f"{time} {CMD_BY_TEXT_TYPE[meta_type]} {msg['text']}")
         elif meta_type in VALUE_CMD_BY_TYPE:
             events.append(f"{time} {VALUE_CMD_BY_TYPE[meta_type]} {msg[META_ATTRS[meta_type][0]]}")
+        elif meta_type in META_ATTRS:
+            events.append(_format_meta_event(time, msg))
         elif meta_type in CMD_BY_TYPE:
             suffix = "" if msg["channel"] == default_channel else f" @{msg['channel']}"
             if meta_type in ("note_on", "note_off") and msg["velocity"] == 0:
