@@ -1,4 +1,4 @@
-# Stochastic sparrow: learning music composition from examples
+# Stochastic sparrow: learning music composition from examples (spun off [https://github.com/mooss/stochastic-sparrow](mooss/stochastic-sparrow))
 
 ## Python setup
 
