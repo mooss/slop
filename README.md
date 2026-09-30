@@ -18,6 +18,8 @@ Projects being more of an ongoing/exploratory/unfinished work.
 [`exp/documentr.podman-eisvogel`](https://github.com/mooss/slop/tree/exp/documentr.podman-eisvogel)
 ### JSON lexer (starting point, profiling, no lexing)
 [`exp/jsonlexer`](https://github.com/mooss/slop/tree/exp/jsonlexer)
+### Stochastic sparrow: learning music composition from examples (spun off [https://github.com/mooss/stochastic-sparrow](mooss/stochastic-sparrow))
+[`exp/stochastic-sparrow`](https://github.com/mooss/slop/tree/exp/stochastic-sparrow)
 
 ## Slop branches
 
